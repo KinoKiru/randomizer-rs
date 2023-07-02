@@ -5,8 +5,8 @@ use crate::api::data::number::{RandomDiceQuery, RandomIntQuery};
 
 #[get("/randomInt")]
 async fn random_int(info: web::Query<RandomIntQuery>) -> Result<impl Responder> {
-    // Get query param allow negative, if not given default to true
-    let allow_nullable: bool = info.allow_negative.unwrap_or(true);
+    // Get query param allow negative
+    let allow_nullable: bool = info.allow_negative;
     // Create random thread on cpu
     let mut rng: rand::rngs::ThreadRng = thread_rng();
 
@@ -21,8 +21,8 @@ async fn random_int(info: web::Query<RandomIntQuery>) -> Result<impl Responder> 
 
 #[get("/randomDice")]
 async fn random_dice(info: actix_web_validator::Query<RandomDiceQuery>) -> Result<impl Responder> {
-    // Get array size from query, if empty set default to 1
-    let array_size: i32 = info.amount_of_dice.unwrap_or(1);
+    // Get array size from query
+    let array_size: i32 = info.amount_of_dice;
     let mut rng: rand::rngs::ThreadRng = thread_rng();
 
     // Because we don't know how big the given array should be on compiling

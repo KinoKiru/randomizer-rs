@@ -2,13 +2,26 @@ use serde::Deserialize;
 use validator::Validate;
 
 #[derive(Debug, Validate, Deserialize, Clone)]
+#[serde(default)]
 pub struct RandomPasswordQuery {
     #[validate(range(min = 1, max = 250))]
-    pub length: Option<i32>,
-    pub allow_lowercase: Option<bool>,
-    pub allow_uppercase: Option<bool>,
-    pub allow_specials: Option<bool>,
-    pub allow_numbers: Option<bool>,
+    pub length: i32,
+    pub allow_lowercase: bool,
+    pub allow_uppercase: bool,
+    pub allow_specials: bool,
+    pub allow_numbers: bool,
+}
+
+impl Default for RandomPasswordQuery {
+    fn default() -> RandomPasswordQuery {
+        RandomPasswordQuery {
+            length: 10,
+            allow_uppercase: true,
+            allow_lowercase: true,
+            allow_numbers: true,
+            allow_specials: true,
+        }
+    }
 }
 
 // pub trait ValidateArgs<'v_a> {
