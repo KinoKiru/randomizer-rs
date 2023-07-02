@@ -7,6 +7,8 @@ edition = "2021"
 
 [dependencies]
 actix-web = "4"
+actix-web-validator = "5.0.1"
+validator = { version = "0.16", features = ["derive"] }
 rand = "0.8.5"
 serde = { version = "1.0.162", features = ["derive"] }
 
