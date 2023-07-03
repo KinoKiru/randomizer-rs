@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use validator::Validate;
 
-#[derive(Debug, Validate, Deserialize, Clone)]
+#[derive(Debug, Validate, Deserialize)]
 #[serde(default)]
 pub struct RandomPasswordQuery {
     #[validate(range(min = 1, max = 250))]
@@ -10,6 +10,25 @@ pub struct RandomPasswordQuery {
     pub allow_uppercase: bool,
     pub allow_specials: bool,
     pub allow_numbers: bool,
+}
+
+#[derive(Debug, Validate, Deserialize)]
+#[serde(default)]
+pub struct RandomTextQuery {
+    #[validate(range(min = 1, max = 10))]
+    pub amount_of_paragraphs: u8,
+    pub use_english: bool,
+    pub use_html: bool,
+}
+
+impl Default for RandomTextQuery {
+    fn default() -> Self {
+        RandomTextQuery {
+            amount_of_paragraphs: 10,
+            use_english: false,
+            use_html: false,
+        }
+    }
 }
 
 impl Default for RandomPasswordQuery {
