@@ -11,6 +11,7 @@ actix-web-validator = "5.0.1"
 validator = { version = "0.16", features = ["derive"] }
 rand = "0.8.5"
 serde = { version = "1.0.162", features = ["derive"] }
+chrono = { version = "0.4.24", features = ["serde"] }
 
 
 # Enable a small amount of optimization in debug mode

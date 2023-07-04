@@ -1,5 +1,7 @@
 use actix_web::{App, HttpServer};
 mod api;
+pub mod classes;
+pub mod utils;
 
 #[rustfmt::skip]
 #[actix_web::main]
