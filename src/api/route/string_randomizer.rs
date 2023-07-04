@@ -1,7 +1,7 @@
 use actix_web::{get, web, Responder, Result};
 use rand::{thread_rng, Rng};
 
-use crate::api::data::string::{RandomPasswordQuery, RandomTextQuery};
+use crate::api::data::string::{RandomFirstNameQuery, RandomPasswordQuery, RandomTextQuery};
 
 #[get("/randomPassword")]
 async fn random_password(
@@ -34,6 +34,7 @@ async fn random_password(
     let possible_array: &Vec<char> = &possibles.chars().collect();
     let mut rng: rand::rngs::ThreadRng = thread_rng();
 
+    // Very cool loop
     let password: String = (0..info.length)
         .map(|_| possible_array[rng.gen_range(0..possibles.len())])
         .collect();
@@ -47,6 +48,7 @@ async fn random_color() -> Result<impl Responder> {
     let possibles: Vec<char> = "ABCDEF0123456789".chars().collect();
     let mut rng: rand::rngs::ThreadRng = thread_rng();
 
+    // One way to do a loop
     for _ in 0..6 {
         color += &possibles[rng.gen_range(0..possibles.len())].to_string();
     }
@@ -60,6 +62,8 @@ async fn random_text(info: actix_web_validator::Query<RandomTextQuery>) -> Resul
     let mut rng: rand::rngs::ThreadRng = thread_rng();
 
     let full_text: String = if info.use_english {
+        // Either one is possible although include_str handles errors better
+        // fs::read_to_string(Path::new("resource/text/loremipsum.txt")).expect("cannot read file");
         include_str!("..\\..\\..\\resource\\text\\loremipsum.txt").to_string()
     } else {
         include_str!("..\\..\\..\\resource\\text\\loremipsumNL.txt").to_string()
@@ -80,9 +84,48 @@ async fn random_text(info: actix_web_validator::Query<RandomTextQuery>) -> Resul
     }
 }
 
+#[get("/randomFirstName")]
+async fn random_first_name(
+    info: actix_web_validator::Query<RandomFirstNameQuery>,
+) -> Result<impl Responder> {
+    if !info.allow_boy_names && !info.allow_girl_names {
+        return Err(actix_web::error::ErrorBadRequest(
+            "Kan geen namen genereren als alles uitgeschakeld is",
+        ));
+    };
+
+    let mut rng: rand::rngs::ThreadRng = thread_rng();
+    let mut names: Vec<String> = vec![];
+    if info.allow_boy_names {
+        names.append(
+            &mut include_str!("..\\..\\..\\resource\\text\\jongensvoornamen.txt")
+                .split_whitespace() // Split on any whitespace & turn into iter<str>
+                .map(|e| e.to_string()) // Turn any item to String instead of str
+                .collect::<Vec<String>>(),
+        );
+    };
+
+    if info.allow_girl_names {
+        names.append(
+            &mut include_str!("..\\..\\..\\resource\\text\\meisjesvoornamen.txt")
+                .split_whitespace()
+                .map(|e| e.to_string())
+                .collect::<Vec<String>>(),
+        );
+    };
+
+    // Collect the random names to return to user
+    let final_names: Vec<String> = (0..info.amount_of_names)
+        .map(|_| names[rng.gen_range(0..names.len())].clone())
+        .collect();
+
+    Ok(web::Json(final_names))
+}
+
 pub fn routes() -> actix_web::Scope {
     web::scope("/string")
         .service(random_password)
         .service(random_color)
         .service(random_text)
+        .service(random_first_name)
 }

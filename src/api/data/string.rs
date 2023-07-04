@@ -21,14 +21,13 @@ pub struct RandomTextQuery {
     pub use_html: bool,
 }
 
-impl Default for RandomTextQuery {
-    fn default() -> Self {
-        RandomTextQuery {
-            amount_of_paragraphs: 10,
-            use_english: false,
-            use_html: false,
-        }
-    }
+#[derive(Debug, Validate, Deserialize)]
+#[serde(default)]
+pub struct RandomFirstNameQuery {
+    #[validate(range(min = 1, max = 4294967295))]
+    pub amount_of_names: u32,
+    pub allow_boy_names: bool,
+    pub allow_girl_names: bool,
 }
 
 impl Default for RandomPasswordQuery {
@@ -39,6 +38,26 @@ impl Default for RandomPasswordQuery {
             allow_lowercase: true,
             allow_numbers: true,
             allow_specials: true,
+        }
+    }
+}
+
+impl Default for RandomTextQuery {
+    fn default() -> Self {
+        RandomTextQuery {
+            amount_of_paragraphs: 10,
+            use_english: false,
+            use_html: false,
+        }
+    }
+}
+
+impl Default for RandomFirstNameQuery {
+    fn default() -> Self {
+        RandomFirstNameQuery {
+            amount_of_names: 10,
+            allow_boy_names: true,
+            allow_girl_names: true,
         }
     }
 }
