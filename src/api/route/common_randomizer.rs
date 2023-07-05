@@ -61,14 +61,13 @@ async fn random_card(info: web::Query<RandomCardQuery>) -> Result<impl Responder
     let mut card = files[rng.gen_range(0..files.len())].as_ref();
 
     if !info.allow_joker {
-        while card
-            .unwrap()
-            .file_name()
-            .to_str()
-            .unwrap()
-            .contains("joker")
-        {
-            card = files[rng.gen_range(0..files.len())].as_ref()
+        while let Ok(card_entry) = card {
+            if matches!(card_entry.file_name().to_str(), Some(file_name) if file_name.contains("joker"))
+            {
+                card = files[rng.gen_range(0..files.len())].as_ref()
+            } else {
+                break;
+            }
         }
     }
 
