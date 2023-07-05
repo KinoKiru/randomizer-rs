@@ -8,4 +8,5 @@ pub fn routes() -> actix_web::Scope {
         .service(route::number_randomizer::routes())
         .service(route::string_randomizer::routes())
         .service(route::common_randomizer::routes())
+        .service(route::quote_randomizer::routes())
 }
