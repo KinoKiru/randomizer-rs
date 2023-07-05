@@ -30,6 +30,12 @@ pub struct RandomFirstNameQuery {
     pub allow_girl_names: bool,
 }
 
+#[derive(Debug, Deserialize, Validate)]
+pub struct CreateQuoteQuery {
+    #[validate(length(min = 1))]
+    pub text: String,
+}
+
 impl Default for RandomPasswordQuery {
     fn default() -> RandomPasswordQuery {
         RandomPasswordQuery {

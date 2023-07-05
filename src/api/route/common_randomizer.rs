@@ -44,6 +44,7 @@ async fn random_location() -> Result<impl Responder> {
 #[get("/randomDate")]
 async fn random_date() -> Result<impl Responder> {
     let mut rng: rand::rngs::ThreadRng = thread_rng();
+    // Make date between first of January 1940 between now
     let dt =
         NaiveDateTime::from_timestamp_opt(rng.gen_range(-946771200..Utc::now().timestamp()), 0)
             .ok_or(actix_web::error::ErrorInternalServerError(
@@ -60,14 +61,14 @@ async fn random_card(info: web::Query<RandomCardQuery>) -> Result<impl Responder
     let files = dir.collect::<Vec<_>>();
     let mut card = files[rng.gen_range(0..files.len())].as_ref();
 
+    // If joker card is not allowed loop until other is found
     if !info.allow_joker {
-        while let Ok(card_entry) = card {
-            if matches!(card_entry.file_name().to_str(), Some(file_name) if file_name.contains("joker"))
-            {
-                card = files[rng.gen_range(0..files.len())].as_ref()
-            } else {
-                break;
-            }
+        // While file name contains joker get new card
+        while matches!(
+            card.expect("Card should exist").file_name().to_str(),
+            Some(file_name) if file_name.contains("joker"))
+        {
+            card = files[rng.gen_range(0..files.len())].as_ref()
         }
     }
 
