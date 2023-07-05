@@ -64,9 +64,9 @@ async fn random_text(info: actix_web_validator::Query<RandomTextQuery>) -> Resul
     let full_text: String = if info.use_english {
         // Either one is possible although include_str handles errors better
         // fs::read_to_string(Path::new("resource/text/loremipsum.txt")).expect("cannot read file");
-        include_str!("..\\..\\..\\resource\\text\\loremipsum.txt").to_string()
+        include_str!("../../../resource/text/loremipsum.txt").to_string()
     } else {
-        include_str!("..\\..\\..\\resource\\text\\loremipsumNL.txt").to_string()
+        include_str!("../../../resource/text/loremipsumNL.txt").to_string()
     };
     let paragraph: Vec<&str> = full_text.split("--").collect::<Vec<&str>>();
 
@@ -98,7 +98,7 @@ async fn random_first_name(
     let mut names: Vec<String> = vec![];
     if info.allow_boy_names {
         names.append(
-            &mut include_str!("..\\..\\..\\resource\\text\\jongensvoornamen.txt")
+            &mut include_str!("../../../resource/text/jongensvoornamen.txt")
                 .split_whitespace() // Split on any whitespace & turn into iter<str>
                 .map(|e| e.to_string()) // Turn any item to String instead of str
                 .collect::<Vec<String>>(),
@@ -107,7 +107,7 @@ async fn random_first_name(
 
     if info.allow_girl_names {
         names.append(
-            &mut include_str!("..\\..\\..\\resource\\text\\meisjesvoornamen.txt")
+            &mut include_str!("../../../resource/text/meisjesvoornamen.txt")
                 .split_whitespace()
                 .map(|e| e.to_string())
                 .collect::<Vec<String>>(),
