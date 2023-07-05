@@ -2,7 +2,8 @@ use std::fs;
 use std::path::Path;
 use std::time::Duration;
 
-use actix_web::{get, web, Responder, Result};
+use actix_web::http::StatusCode;
+use actix_web::{get, web, HttpResponse, Responder, Result};
 use chrono::{NaiveDateTime, Utc};
 use rand::{thread_rng, Rng};
 
@@ -53,13 +54,31 @@ async fn random_date() -> Result<impl Responder> {
 }
 
 #[get("/randomCard")]
-async fn random_card(_info: web::Query<RandomCardQuery>) -> Result<impl Responder> {
-    let paths = fs::read_dir(Path::new("resource/cards")).unwrap();
-    // TODO make while loop and if info.allow_jokers is false and file name contains joker keep looping untill false
+async fn random_card(info: web::Query<RandomCardQuery>) -> Result<impl Responder> {
+    let mut rng: rand::rngs::ThreadRng = thread_rng();
+    let dir = fs::read_dir(Path::new("resource/cards")).unwrap();
+    let files = dir.collect::<Vec<_>>();
+    let mut card = files[rng.gen_range(0..files.len())].as_ref();
 
-    Ok(paths
-        .map(|e| e.unwrap().path().display().to_string())
-        .collect::<String>())
+    if !info.allow_joker {
+        while card
+            .unwrap()
+            .file_name()
+            .to_str()
+            .unwrap()
+            .contains("joker")
+        {
+            card = files[rng.gen_range(0..files.len())].as_ref()
+        }
+    }
+
+    fs::read(card.unwrap().path())
+        .map(|file| {
+            HttpResponse::build(StatusCode::OK)
+                .content_type("image/png")
+                .body(file)
+        })
+        .map_err(|_| actix_web::error::ErrorInternalServerError("cannot read file"))
 }
 
 pub fn routes() -> actix_web::Scope {
