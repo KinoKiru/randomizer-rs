@@ -1,6 +1,6 @@
 use core::fmt;
 
-// Crazy bad enum
+// Creating enum and derive -> (including the code) for clone, copy and debug
 #[derive(Clone, Copy, Debug)]
 pub enum Season {
     Spring,
@@ -40,7 +40,6 @@ impl Season {
 }
 
 // Implement a way to get all values of an enumerator
-
 impl Season {
     pub fn values() -> [Season; 4] {
         [

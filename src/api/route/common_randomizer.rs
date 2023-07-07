@@ -48,7 +48,7 @@ async fn random_date() -> Result<impl Responder> {
     let dt =
         NaiveDateTime::from_timestamp_opt(rng.gen_range(-946771200..Utc::now().timestamp()), 0)
             .ok_or(actix_web::error::ErrorInternalServerError(
-                "lmao error utc error",
+                "UTC Error highly likely to be out of bounds",
             ))?;
 
     Ok(web::Json(dt.format("%Y-%m-%d %H:%M:%S").to_string()))

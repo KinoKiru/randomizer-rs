@@ -90,7 +90,7 @@ async fn random_first_name(
 ) -> Result<impl Responder> {
     if !info.allow_boy_names && !info.allow_girl_names {
         return Err(actix_web::error::ErrorBadRequest(
-            "Kan geen namen genereren als alles uitgeschakeld is",
+            "Cannot generate a name if both girl and boy names are set to off",
         ));
     };
 

@@ -10,7 +10,7 @@ pub struct Location {
     pub latitude: f64,
 }
 
-// Imagine needing to implement a to_string()
+// Explicit implementation for printing [to_string()]
 impl fmt::Display for Location {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(

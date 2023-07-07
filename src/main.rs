@@ -27,7 +27,7 @@ async fn main() -> std::io::Result<()> {
 
     let conn = utils::database::initialize(&db_url).await
         .map_err(|e| error!("{:#?}", e))
-        .expect("LOL database error");
+        .expect("Database error");
 
     let server_url = format!("{host}:{port}");
     // Log server url
