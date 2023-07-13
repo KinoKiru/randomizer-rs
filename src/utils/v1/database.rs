@@ -7,6 +7,5 @@ pub async fn initialize(db_url: &String) -> Result<DatabaseConnection, DbErr> {
     let conn = Database::connect(db_url).await?;
     Migrator::up(&conn, None).await?;
     info!("Connection made and migrations ran");
-
     Ok(conn)
 }

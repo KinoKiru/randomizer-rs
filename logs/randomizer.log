@@ -10,3 +10,12 @@
 2023-07-05 17:59:13 | INFO  | src\utils\database.rs:6 — Trying to connect to database and run migrations
 2023-07-05 17:59:13 | INFO  | src\utils\database.rs:9 — Connection made and migrations ran
 2023-07-05 17:59:13 | INFO  | src\main.rs:34 — Running server on 127.0.0.1:8080
+2023-07-07 18:30:04 | INFO  | src\utils\database.rs:6 — Trying to connect to database and run migrations
+2023-07-07 18:30:34 | ERROR | src\main.rs:29 — Conn(
+    SqlxError(
+        PoolTimedOut,
+    ),
+)
+2023-07-07 18:37:20 | INFO  | src\utils\database.rs:6 — Trying to connect to database and run migrations
+2023-07-07 18:37:20 | INFO  | src\utils\database.rs:9 — Connection made and migrations ran
+2023-07-07 18:37:20 | INFO  | src\main.rs:34 — Running server on 127.0.0.1:8080

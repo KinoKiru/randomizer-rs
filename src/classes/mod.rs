@@ -1,2 +1,1 @@
-pub mod location;
-pub mod season;
+pub mod v1;
