@@ -2,7 +2,7 @@ syntax = "proto3";
 package randomizer.v1;
 
 import "google/protobuf/empty.proto";
-// import "google/protobuf/timestamp.proto";
+import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
 
@@ -15,41 +15,37 @@ service CommonService {
     };
   }
 
-  rpc GetRandomSeason(GetCommonRequest) returns (SeasonResponse) {
+  rpc GetRandomSeason(google.protobuf.Empty) returns (SeasonResponse) {
     option (google.api.http) = {
       get: "/v1/random/season"
     };
   }
 
-  rpc CreateCommon(CreateCommonRequest) returns (Common) {
+  rpc GetRandomLocation(google.protobuf.Empty) returns (Location) {
     option (google.api.http) = {
-      post: "/v1/commons"
-      body: "common"
+      get: "/v1/random/location"
     };
   }
 
-  rpc UpdateCommon(UpdateCommonRequest) returns (Common) {
+  rpc GetRandomDate(google.protobuf.Empty) returns (DateResponse) {
     option (google.api.http) = {
-      patch: "/v1/{common.name=commons/*}"
-      body: "common"
+      get: "/v1/random/date"
     };
   }
 
-  rpc DeleteCommon(DeleteCommonRequest) returns (google.protobuf.Empty) {
+  rpc GetRandomCard(CardRequest) returns (CardResponse) {
     option (google.api.http) = {
-      delete: "/v1/{name=commons/*}"
+      get: "/v1/random/card"
     };
   }
 }
 
-message Common {}
-
 message TimeResponse {
   // The parent resource name, for example, "shelves/shelf1"
-  uint64 secs = 1;
+   uint64 secs = 1;
 
   // The maximum number of items to return.
-  uint32 nanos = 2;
+   uint32 nanos = 2;
 }
 
 enum Season {
@@ -60,37 +56,22 @@ enum Season {
 }
 
 message SeasonResponse {
-  Season season = 1;
+   Season season = 1;
 } 
 
-
-
-message GetCommonRequest {
-  // The field will contain name of the resource requested.
-  string name = 1;
+message Location {
+   double longitude = 1;
+   double latitude = 2;
 }
 
-message CreateCommonRequest {
-  // The parent resource name where the common is to be created.
-  string parent = 1;
-
-  // The common id to use for this common.
-  string common_id = 2;
-
-  // The common resource to create.
-  // The field name should match the Noun in the method name.
-  Common common = 3;
+message DateResponse {
+  google.protobuf.Timestamp date = 1;
 }
 
-message UpdateCommonRequest {
-  // The common resource which replaces the resource on the server.
-  Common common = 1;
-
-  // The update mask applies to the resource. For the `FieldMask` definition,
-  // see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+message CardRequest {
+   bool allow_joker = 1;
 }
 
-message DeleteCommonRequest {
-  // The resource name of the common to be deleted.
-  string name = 1;
+message CardResponse {
+  bytes card = 1;
 }

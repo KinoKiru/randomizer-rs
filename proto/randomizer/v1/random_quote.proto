@@ -87,7 +87,6 @@ message UpdateTypeRequest {
 
   // The update mask applies to the resource. For the `FieldMask` definition,
   // see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-  FieldMask update_mask = 2;
 }
 
 message DeleteTypeRequest {
