@@ -19,3 +19,12 @@
 2023-07-07 18:37:20 | INFO  | src\utils\database.rs:6 — Trying to connect to database and run migrations
 2023-07-07 18:37:20 | INFO  | src\utils\database.rs:9 — Connection made and migrations ran
 2023-07-07 18:37:20 | INFO  | src\main.rs:34 — Running server on 127.0.0.1:8080
+2023-07-15 10:58:55 | INFO  | src\utils\v1\database.rs:6 — Trying to connect to database and run migrations
+2023-07-15 10:58:55 | INFO  | src\utils\v1\database.rs:9 — Connection made and migrations ran
+2023-07-15 10:58:55 | INFO  | src\main.rs:43 — Running server on 127.0.0.1:8080
+2023-07-15 11:06:21 | INFO  | src\utils\v1\database.rs:6 — Trying to connect to database and run migrations
+2023-07-15 11:06:21 | INFO  | src\utils\v1\database.rs:9 — Connection made and migrations ran
+2023-07-15 11:06:21 | INFO  | src\main.rs:44 — Running server on 127.0.0.1:8080
+2023-07-15 11:06:58 | INFO  | src\utils\v1\database.rs:6 — Trying to connect to database and run migrations
+2023-07-15 11:06:58 | INFO  | src\utils\v1\database.rs:9 — Connection made and migrations ran
+2023-07-15 11:06:58 | INFO  | src\main.rs:44 — Running server on 127.0.0.1:8080

@@ -41,7 +41,6 @@ impl CommonService for RandomCommonController {
         }
 
         let image = fs::read(card.unwrap().path()).map_err(|e| Status::internal(e.to_string()))?;
-
         Ok(Response::new(CardResponse { card: image }))
     }
 
