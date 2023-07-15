@@ -28,3 +28,21 @@
 2023-07-15 11:06:58 | INFO  | src\utils\v1\database.rs:6 — Trying to connect to database and run migrations
 2023-07-15 11:06:58 | INFO  | src\utils\v1\database.rs:9 — Connection made and migrations ran
 2023-07-15 11:06:58 | INFO  | src\main.rs:44 — Running server on 127.0.0.1:8080
+2023-07-15 16:40:32 | INFO  | src\utils\v1\database.rs:6 — Trying to connect to database and run migrations
+2023-07-15 16:41:02 | ERROR | src\main.rs:39 — Conn(
+    SqlxError(
+        PoolTimedOut,
+    ),
+)
+2023-07-15 16:41:31 | INFO  | src\utils\v1\database.rs:6 — Trying to connect to database and run migrations
+2023-07-15 16:41:31 | INFO  | src\utils\v1\database.rs:9 — Connection made and migrations ran
+2023-07-15 16:41:31 | INFO  | src\main.rs:44 — Running server on 127.0.0.1:8080
+2023-07-15 16:53:01 | INFO  | src\utils\v1\database.rs:6 — Trying to connect to database and run migrations
+2023-07-15 16:53:01 | INFO  | src\utils\v1\database.rs:9 — Connection made and migrations ran
+2023-07-15 16:53:01 | INFO  | src\main.rs:44 — Running server on 127.0.0.1:8080
+2023-07-15 17:02:58 | INFO  | src\utils\v1\database.rs:6 — Trying to connect to database and run migrations
+2023-07-15 17:02:58 | INFO  | src\utils\v1\database.rs:9 — Connection made and migrations ran
+2023-07-15 17:02:58 | INFO  | src\main.rs:44 — Running server on 127.0.0.1:8080
+2023-07-15 17:15:41 | INFO  | src\utils\v1\database.rs:6 — Trying to connect to database and run migrations
+2023-07-15 17:15:41 | INFO  | src\utils\v1\database.rs:9 — Connection made and migrations ran
+2023-07-15 17:15:41 | INFO  | src\main.rs:44 — Running server on 127.0.0.1:8080
