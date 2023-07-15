@@ -21,10 +21,10 @@ impl CommonService for RandomCommonController {
 
         let dir = fs::read_dir(Path::new("resource/cards"))
             .await
-            .map_err(|e| Status::internal(e.to_string()));
+            .map_err(|e| Status::internal(e.to_string()))?;
         let files = Vec::new();
 
-        while let Ok(child) = dir.next().await? {
+        while let Some(Ok(child)) = dir.next().await {
             if child.metadata().await?.is_file() {
                 files.push(child);
             } else {
