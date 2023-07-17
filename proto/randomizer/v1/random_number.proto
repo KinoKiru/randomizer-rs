@@ -1,95 +1,39 @@
 syntax = "proto3";
 package randomizer.v1;
 
-import "google/protobuf/empty.proto";
 // import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
 // Generated according to https://cloud.google.com/apis/design/standard_methods
 service NumberService {
-  rpc ListNumbers(ListNumbersRequest) returns (ListNumbersResponse) {
+  rpc GetRandomInt(IntRequest) returns (IntResponse) {
     option (google.api.http) = {
-      get: "/v1/random/numbers"
+      get: "/v1/random/int"
     };
   }
 
-  rpc GetNumber(GetNumberRequest) returns (Number) {
+  rpc GetRandomDice(DiceRequest) returns (DiceResponse) {
     option (google.api.http) = {
-      get: "/v1/random/{name=numbers/*}"
-    };
-  }
-
-  rpc CreateNumber(CreateNumberRequest) returns (Number) {
-    option (google.api.http) = {
-      post: "/v1/random/numbers"
-      body: "number"
-    };
-  }
-
-  rpc UpdateNumber(UpdateNumberRequest) returns (Number) {
-    option (google.api.http) = {
-      patch: "/v1/random/{number.name=numbers/*}"
-      body: "number"
-    };
-  }
-
-  rpc DeleteNumber(DeleteNumberRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/v1/random/{name=numbers/*}"
+      get: "/v1/random/dice"
     };
   }
 }
 
- message Number {
- 
- }
-
-message ListNumbersRequest {
-  // The parent resource name, for example, "shelves/shelf1"
-  string parent = 1;
-
-  // The maximum number of items to return.
-  int32 page_size = 2;
-
-  // The next_page_token value returned from a previous List request, if any.
-  string page_token = 3;
+message IntRequest {
+  bool allow_negative = 1;
 }
 
-message ListNumbersResponse {
-  // The field name should match the noun "number" in the method name.
-  // There will be a maximum number of items returned based on the page_size field in the request.
-  repeated Number numbers = 1;
-
-  // Token to retrieve the next page of results, or empty if there are no more results in the list.
-  string next_page_token = 2;
+message IntResponse {
+  int32 number = 1;
 }
 
-message GetNumberRequest {
-  // The field will contain name of the resource requested.
-  string name = 1;
+message DiceRequest {
+  int32 amount_of_dice = 1;
 }
 
-message CreateNumberRequest {
-  // The parent resource name where the number is to be created.
-  string parent = 1;
-
-  // The number id to use for this number.
-  string number_id = 2;
-
-  // The number resource to create.
-  // The field name should match the Noun in the method name.
-  Number number = 3;
+message DiceResponse {
+  repeated int32 dices = 1;
 }
 
-message UpdateNumberRequest {
-  // The number resource which replaces the resource on the server.
-  Number number = 1;
 
-  // The update mask applies to the resource. For the `FieldMask` definition,
-  // see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-}
 
-message DeleteNumberRequest {
-  // The resource name of the number to be deleted.
-  string name = 1;
-}
