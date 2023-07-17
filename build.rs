@@ -14,7 +14,7 @@ fn main() -> io::Result<()> {
         .filter_map(|entry| {
             let is_proto = entry.file_name().to_string_lossy().ends_with(".proto");
             if is_proto {
-                return Some(entry.into_path());
+                Some(entry.into_path())
             } else {
                 None
             }
