@@ -7,10 +7,11 @@ use prost_types::Timestamp;
 use rand::{thread_rng, Rng};
 use tonic::{Request, Response, Status};
 
-use crate::proto::common_service_server::CommonService;
+use crate::proto::common_service_server::{CommonService, CommonServiceServer};
 use crate::proto::{
     CardRequest, CardResponse, DateResponse, Location, Season, SeasonResponse, TimeResponse,
 };
+use crate::utils::v1::custom_macro::rules;
 
 #[derive(Debug, Default)]
 pub struct RandomCommonController {}
@@ -104,3 +105,4 @@ impl CommonService for RandomCommonController {
         }))
     }
 }
+rules::initialize_route!(CommonServiceServer, RandomCommonController);

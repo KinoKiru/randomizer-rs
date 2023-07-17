@@ -3,13 +3,9 @@ extern crate log;
 
 use std::env;
 
-use tonic::codegen::CompressionEncoding;
 use tonic::service::interceptor;
 use tonic::transport::Server;
 use tonic_reflection::server::Builder;
-
-use crate::api::v1::service::common_randomizer::RandomCommonController;
-use crate::proto::common_service_server::CommonServiceServer;
 
 pub mod api;
 pub mod utils;
@@ -49,9 +45,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         req.extensions_mut().insert(conn.clone());
         Ok(req)
     }))
-    .add_service(CommonServiceServer::new(RandomCommonController::default())
-        .send_compressed(CompressionEncoding::Gzip)
-        .accept_compressed(CompressionEncoding::Gzip))
+    .add_service(api::v1::service::common_randomizer::server())
     .add_service(Builder::configure()
         .register_encoded_file_descriptor_set(proto::FILE_DESCRIPTOR_SET)
         .build()?
