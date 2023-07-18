@@ -2,3 +2,4 @@
 
 pub mod prelude;
 pub mod quote;
+pub mod extension;

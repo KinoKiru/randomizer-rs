@@ -5,73 +5,63 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
-
-
 // Generated according to https://cloud.google.com/apis/design/standard_methods
 service CommonService {
   rpc GetRandomTime(google.protobuf.Empty) returns (TimeResponse) {
     option (google.api.http) = {
-      get: "/v1/random/time"
+      get : "/v1/random/time"
     };
   }
 
   rpc GetRandomSeason(google.protobuf.Empty) returns (SeasonResponse) {
     option (google.api.http) = {
-      get: "/v1/random/season"
+      get : "/v1/random/season"
     };
   }
 
   rpc GetRandomLocation(google.protobuf.Empty) returns (Location) {
     option (google.api.http) = {
-      get: "/v1/random/location"
+      get : "/v1/random/location"
     };
   }
 
   rpc GetRandomDate(google.protobuf.Empty) returns (DateResponse) {
     option (google.api.http) = {
-      get: "/v1/random/date"
+      get : "/v1/random/date"
     };
   }
 
   rpc GetRandomCard(CardRequest) returns (CardResponse) {
     option (google.api.http) = {
-      get: "/v1/random/card"
+      get : "/v1/random/card"
     };
   }
 }
 
 message TimeResponse {
   // The parent resource name, for example, "shelves/shelf1"
-   uint64 secs = 1;
+  uint64 secs = 1;
 
   // The maximum number of items to return.
-   uint32 nanos = 2;
+  uint32 nanos = 2;
 }
 
 enum Season {
   SPRING = 0;
   SUMMER = 1;
-  AUTUMN = 2; 
+  AUTUMN = 2;
   WINTER = 3;
 }
 
-message SeasonResponse {
-   Season season = 1;
-} 
+message SeasonResponse { Season season = 1; }
 
 message Location {
-   double longitude = 1;
-   double latitude = 2;
+  double longitude = 1;
+  double latitude = 2;
 }
 
-message DateResponse {
-  google.protobuf.Timestamp date = 1;
-}
+message DateResponse { google.protobuf.Timestamp date = 1; }
 
-message CardRequest {
-   bool allow_joker = 1;
-}
+message CardRequest { bool allow_joker = 1; }
 
-message CardResponse {
-  bytes card = 1;
-}
+message CardResponse { bytes card = 1; }

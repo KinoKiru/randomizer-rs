@@ -9,39 +9,39 @@ import "google/api/annotations.proto";
 service TypeService {
   rpc ListTypes(ListTypesRequest) returns (ListTypesResponse) {
     option (google.api.http) = {
-      get: "/v1alpha1/Types"
+      get : "/v1alpha1/Types"
     };
   }
 
   rpc GetType(GetTypeRequest) returns (Type) {
     option (google.api.http) = {
-      get: "/v1alpha1/{name=Types/*}"
+      get : "/v1alpha1/{name=Types/*}"
     };
   }
 
   rpc CreateType(CreateTypeRequest) returns (Type) {
     option (google.api.http) = {
-      post: "/v1alpha1/Types"
-      body: "Type"
+      post : "/v1alpha1/Types"
+      body : "Type"
     };
   }
 
   rpc UpdateType(UpdateTypeRequest) returns (Type) {
     option (google.api.http) = {
-      patch: "/v1alpha1/{Type.name=Types/*}"
-      body: "Type"
+      patch : "/v1alpha1/{Type.name=Types/*}"
+      body : "Type"
     };
   }
 
   rpc DeleteType(DeleteTypeRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/v1alpha1/{name=Types/*}"
+      delete : "/v1alpha1/{name=Types/*}"
     };
   }
 }
 
 message Type {
-// ! This should be defined elsewere
+  // ! This should be defined elsewere
 }
 
 message ListTypesRequest {
@@ -57,10 +57,12 @@ message ListTypesRequest {
 
 message ListTypesResponse {
   // The field name should match the noun "Type" in the method name.
-  // There will be a maximum number of items returned based on the page_size field in the request.
+  // There will be a maximum number of items returned based on the page_size
+  // field in the request.
   repeated Type Types = 1;
 
-  // Token to retrieve the next page of results, or empty if there are no more results in the list.
+  // Token to retrieve the next page of results, or empty if there are no more
+  // results in the list.
   string next_page_token = 2;
 }
 
@@ -86,7 +88,8 @@ message UpdateTypeRequest {
   Type Type = 1;
 
   // The update mask applies to the resource. For the `FieldMask` definition,
-  // see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+  // see
+  // https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
 }
 
 message DeleteTypeRequest {
