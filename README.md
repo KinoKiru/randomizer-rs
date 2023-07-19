@@ -4,8 +4,8 @@
 
 # Todo
 
-- [] Create test for each call
-- [] Apply validation for each request
-- [] Add more calls and complexity
-- [] Add a few more macros to get better understanding
-- [] Add Derive macros
+- [ ] Create test for each call
+- [ ] Apply validation for each request
+- [ ] Add more calls and complexity
+- [ ] Add a few more macros to get better understanding
+- [ ] Add Derive macros
