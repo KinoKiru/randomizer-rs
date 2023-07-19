@@ -1,55 +1,64 @@
-use actix_web::error::ErrorInternalServerError;
-use actix_web::{get, post, web, Responder, Result};
 use entity::quote;
 use migration::sea_orm::{
     ActiveModelTrait, DatabaseConnection, EntityTrait, QueryOrder, QuerySelect,
 };
 use migration::Expr;
+use tonic::{Request, Response, Status};
 
-use crate::api::data::quote::CreateQuoteQuery;
+use crate::proto::quote_service_server::{QuoteService, QuoteServiceServer};
+use crate::proto::{CreateQuoteRequest, Quote};
+use crate::utils::v1::custom_macro::rules;
 
-#[get("/randomQuote")]
-async fn get_random_quote(conn: web::Data<DatabaseConnection>) -> Result<impl Responder> {
-    let db = conn.as_ref();
+#[derive(Debug, Default)]
+pub struct RandomQuoteController {}
 
-    let item: Option<quote::Model> = quote::Entity::find()
-        .limit(1)
-        .order_by(Expr::cust("RANDOM()"), migration::Order::Asc)
-        .one(db)
-        .await
-        .map_err(|e| ErrorInternalServerError(e))?;
+#[tonic::async_trait]
+impl QuoteService for RandomQuoteController {
+    async fn get_random_quotes(
+        &self,
+        request: tonic::Request<()>,
+    ) -> Result<tonic::Response<Quote>, Status> {
+        let db = request.extensions().get::<DatabaseConnection>().unwrap();
 
-    if let Some(item) = item {
-        Ok(web::Json(item.text))
-    } else {
-        Err(actix_web::error::ErrorNotFound(
-            "No quote found, maybe make one?",
-        ))
+        let item: Option<quote::Model> = quote::Entity::find()
+            .limit(1)
+            .order_by(Expr::cust("RANDOM()"), migration::Order::Asc)
+            .one(db)
+            .await
+            .map_err(|e| Status::internal(e.to_string()))?;
+
+        if let Some(item) = item {
+            Ok(Response::new(Quote {
+                id: item.id,
+                text: item.text,
+            }))
+        } else {
+            Err(Status::internal("No quote found, maybe make one?"))
+        }
+    }
+
+    async fn create_quote(
+        &self,
+        request: Request<CreateQuoteRequest>,
+    ) -> Result<tonic::Response<Quote>, Status> {
+        let db = request.extensions().get::<DatabaseConnection>().unwrap();
+        let req = request.get_ref();
+
+        let new_quote = quote::ActiveModel {
+            text: migration::sea_orm::ActiveValue::Set(req.quote.as_ref().unwrap().text.clone()),
+            ..Default::default()
+        };
+
+        let new_quote: quote::Model = new_quote
+            .insert(db)
+            .await
+            .map_err(|e| Status::internal(e.to_string()))?;
+
+        Ok(Response::new(Quote {
+            id: new_quote.id,
+            text: new_quote.text,
+        }))
     }
 }
 
-#[post("/randomQuote")]
-async fn store_random_quote(
-    conn: web::Data<DatabaseConnection>,
-    info: actix_web_validator::Query<CreateQuoteQuery>,
-) -> Result<impl Responder> {
-    let db = conn.as_ref();
-
-    let new_quote = quote::ActiveModel {
-        text: migration::sea_orm::ActiveValue::Set(info.text.clone()),
-        ..Default::default()
-    };
-
-    let new_quote: quote::Model = new_quote
-        .insert(db)
-        .await
-        .map_err(|e| ErrorInternalServerError(e))?;
-
-    Ok(web::Json(new_quote.text))
-}
-
-pub fn routes() -> actix_web::Scope {
-    web::scope("/string")
-        .service(get_random_quote)
-        .service(store_random_quote)
-}
+rules::initialize_route!(QuoteServiceServer, RandomQuoteController);

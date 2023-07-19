@@ -48,6 +48,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     .add_service(api::v1::service::common_randomizer::server())
     .add_service(api::v1::service::number_randomizer::server())
     .add_service(api::v1::service::string_randomizer::server())
+    .add_service(api::v1::service::quote_randomizer::server())
+
     .add_service(Builder::configure()
         .register_encoded_file_descriptor_set(proto::FILE_DESCRIPTOR_SET)
         .build()?
