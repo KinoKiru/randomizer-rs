@@ -1,0 +1,69 @@
+syntax = "proto3";
+package randomizer.v1;
+
+import "google/protobuf/empty.proto";
+// import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+// Generated according to https://cloud.google.com/apis/design/standard_methods
+service StringService {
+  rpc GetRandomPassword(PasswordRequest) returns (PasswordResponse) {
+    option (google.api.http) = {
+      get: "/v1/password"
+    };
+  }
+
+  rpc GetRandomColor(google.protobuf.Empty) returns (ColorResponse) {
+    option (google.api.http) = {
+      get: "/v1/color"
+    };
+  }
+
+  rpc GetRandomText(TextRequest) returns (TextResponse) {
+    option (google.api.http) = {
+      get: "/v1/text"
+    };
+  }
+
+  rpc GetRandomName(NameRequest) returns (NameResponse) {
+    option (google.api.http) = {
+      get: "/v1/name"
+    };
+  }
+}
+
+message PasswordRequest {
+    int32 length = 1;
+    bool allow_lowercase = 2;
+    bool allow_uppercase = 3;
+    bool allow_specials = 4;
+    bool allow_numbers = 5;
+}
+
+message PasswordResponse {
+   string password = 1;
+}
+
+message ColorResponse {
+   string color = 1;
+}
+
+message TextRequest {
+    int32 amount_of_paragraphs = 1;
+    bool use_english = 2;
+    bool use_html = 3;
+}
+
+message TextResponse {
+    string text = 1;
+}
+
+message NameRequest {
+    int32 amount_of_names = 1;
+    bool allow_boy_names = 2;
+    bool allow_girl_names = 3;
+}
+
+message NameResponse {
+    repeated string names = 1;
+}

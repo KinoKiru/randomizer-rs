@@ -1,0 +1,39 @@
+syntax = "proto3";
+package randomizer.v1;
+
+// import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+// Generated according to https://cloud.google.com/apis/design/standard_methods
+service NumberService {
+  rpc GetRandomInt(IntRequest) returns (IntResponse) {
+    option (google.api.http) = {
+      get: "/v1/random/int"
+    };
+  }
+
+  rpc GetRandomDice(DiceRequest) returns (DiceResponse) {
+    option (google.api.http) = {
+      get: "/v1/random/dice"
+    };
+  }
+}
+
+message IntRequest {
+  bool allow_negative = 1;
+}
+
+message IntResponse {
+  int32 number = 1;
+}
+
+message DiceRequest {
+  int32 amount_of_dice = 1;
+}
+
+message DiceResponse {
+  repeated int32 dices = 1;
+}
+
+
+

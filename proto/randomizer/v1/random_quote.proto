@@ -1,0 +1,36 @@
+syntax = "proto3";
+package randomizer.v1;
+
+import "google/protobuf/empty.proto";
+// import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+// Generated according to https://cloud.google.com/apis/design/standard_methods
+service QuoteService {
+  rpc GetRandomQuotes(google.protobuf.Empty) returns (Quote) {
+    option (google.api.http) = {
+      get: "/v1/quote"
+    };
+  }
+
+  rpc CreateQuote(CreateQuoteRequest) returns (Quote) {
+    option (google.api.http) = {
+      post: "/v1/quote"
+      body: "quote"
+    };
+  }
+
+}
+
+message Quote {
+  int32 id = 1;
+  string text = 2;
+}
+
+message CreateQuoteRequest {
+  // The quote resource to create.
+  // The field name should match the Noun in the method name.
+  Quote quote = 3;
+}
+
+

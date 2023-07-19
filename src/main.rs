@@ -3,15 +3,21 @@ extern crate log;
 
 use std::env;
 
-use actix_web::{middleware, web, App, HttpServer};
+use tonic::service::interceptor;
+use tonic::transport::Server;
+use tonic_reflection::server::Builder;
 
-mod api;
-pub mod classes;
+pub mod api;
 pub mod utils;
 
+pub mod proto {
+    tonic::include_proto!("randomizer.v1");
+    pub(crate) const FILE_DESCRIPTOR_SET: &[u8] = tonic::include_file_descriptor_set!("descriptor");
+}
+
 #[rustfmt::skip]
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Enable rust backtrace for clearer errors
     std::env::set_var("RUST_BACKTRACE", "1");
     // Init log file
@@ -25,7 +31,7 @@ async fn main() -> std::io::Result<()> {
     let host = env::var("HOST").unwrap_or(String::from("127.0.0.1"));
     let port = env::var("PORT").unwrap_or(String::from("8080"));
 
-    let conn = utils::database::initialize(&db_url).await
+    let conn = utils::v1::database::initialize(&db_url).await
         .map_err(|e| error!("{:#?}", e))
         .expect("Database error");
 
@@ -33,12 +39,23 @@ async fn main() -> std::io::Result<()> {
     // Log server url
     info!("Running server on {}", server_url);
 
-    // Add compression to api and add database connection to each request
-    HttpServer::new(move || App::new()
-    .wrap(middleware::Compress::default())
-    .service(api::routes())
-    .app_data(web::Data::new(conn.clone())))
-        .bind(server_url)?
-        .run()
-        .await
+
+    Server::builder()
+    .layer(interceptor(move |mut req: tonic::Request<()>| {
+        req.extensions_mut().insert(conn.clone());
+        Ok(req)
+    }))
+    .add_service(api::v1::service::common_randomizer::server())
+    .add_service(api::v1::service::number_randomizer::server())
+    .add_service(api::v1::service::string_randomizer::server())
+    .add_service(api::v1::service::quote_randomizer::server())
+
+    .add_service(Builder::configure()
+        .register_encoded_file_descriptor_set(proto::FILE_DESCRIPTOR_SET)
+        .build()?
+    )
+    .serve(server_url.parse().expect("server url could not be parsed"))
+    .await?;
+
+Ok(())
 }
